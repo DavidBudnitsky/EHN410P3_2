@@ -1,22 +1,34 @@
 import numpy as np
 import string
-import random
-import datetime
-import Prac2RC4 as pracCode
 from PLAINTEXTS import PlainTexts
 import os
-# For the next line, I had to say `pip install Pillow` in terminal to get it to accept this import
 from PIL import Image
 import multiprocessing
+import u20453508_Prac3_RC4 as RC4
 from u20453508_Prac_3_Backend import *
 
 # Other variables and setups
 np.random.seed(0)
-random.seed(0)
-# stringPrintable = string.printable[0:94]
-
-saveTime = False
 stringPrintable = string.printable[0:94]
+hexChars = "0123456789ABCDEF"
+keys = [
+    "P@ssw0rd! 123",
+    "S3cur3 Key$",
+    "N0t3b00k #789",
+    "Ch3ck M@il*",
+    "L0g1n $ucce$$",
+    "Fr33 D0wnl0ad$",
+    "H@ppy D@ys! 2023",
+    "P1nk Fl0wer$",
+    "T3ch G3n1u$",
+    "C0d3 M@st3r!",
+    "Saf3 Tr@v3l$",
+    "Sp@rkL3 _ &Sh1n3",
+    "M0onL1gh t@786",
+    "Blu3 Sk1e$#42",
+    "S3cur1ty @F1r$t",
+]
+
 AES_color = '\033[96m'
 DES_color = '\033[92m'
 RC4_color = '\033[95m'
@@ -30,109 +42,9 @@ def infoSaver(func):
         folderName = fileName[0:3]
         fileName = folderName + '/' + fileName
         with open(fileName, 'w') as file:
-            if saveTime:
-                t = str(datetime.datetime.now())
-                file.write(t + '\n')
             file.write(textToSave)
 
     return wrapper
-
-
-def saveArrayAsImage(arrToSave: np.ndarray, desiredSize: tuple, fName: string):
-    """
-    Takes in a 1D array, makes it an image and then saves it.
-    My convertToImage simply removes the last few things
-    :param arrToSave: 1D np.array
-    :param desiredSize: tuple of the size of the image to save
-    :param fName: Name to save the file under
-    :return: None
-    """
-    img = pracCode.aes_des_rc4_Convert_To_Image(arrToSave, desiredSize)
-    img = Image.fromarray(img)
-    img.save(fName)
-
-
-# region RC4 Test Functions
-@infoSaver
-def RC4STGen():
-    K = "hello world"
-    ans = pracCode.rc4_Init_S_T(K)
-    return np.array2string(ans, separator=',')
-
-
-# endregion RC4 Test Functions
-
-
-# RC4 Batch Function calls for strings and images
-def RC4StringTests(numKeys: int = 100):
-    keys = ''
-    ciphers = ''
-    for k in range(0, numKeys):
-        # Generate a random string of printable characters
-        print(f"{RC4_color}RC4 String: Testing key number {k + 1} of {numKeys}")
-        K = ''.join(random.choice(stringPrintable) for _ in range(32))
-        keys = keys + K + '\n'
-        for P in PlainTexts:
-            C = pracCode.rc4_Encrypt_String(P, K)
-
-            c = str(C)
-            ciphers = ciphers + c + '\n'
-
-            Pd = pracCode.rc4_Decrypt_String(C, K)
-            if P != Pd:
-                print("Error in RC4 String:")
-                print("Plaintext = ", P)
-                print("Key = \n", K)
-                print("Deciphered Plaintext = ", Pd)
-    with open("RC4/StringKeys.txt", "w") as file:
-        file.write(keys)
-    with open("RC4/StringCiphers.txt", "w") as file:
-        file.write(ciphers)
-
-
-def RC4TestImages(numKeys: int = 1, numImages: int = 1):
-    keys = ''
-    if numKeys is None:
-        numKeys = 1
-    if numKeys <= 0:
-        numKeys = 1
-    directory = "Images/Original/"
-    files = os.listdir(directory)
-    if numImages == 0:
-        numImages = len(files)
-    for i, file in enumerate(files[0:numImages]):
-        print(f"{RC4_color}RC4 String: Testing file {i + 1} of {numImages}, with filename {file}:")
-        imgDir = directory + file
-        P = Image.open(imgDir)
-        P = np.array(P)
-        originalShape = np.shape(P)
-        for keyNum in range(0, numKeys):
-            print(f"{RC4_color}RC4: Testing {file} with key {keyNum + 1}")
-            K = ''.join(random.choice(stringPrintable) for _ in range(32))
-            keys = keys + K + '\n'
-            C = pracCode.rc4_Encrypt_Image(P, K)
-
-            temp = C.copy()
-            fileName = "Images/Encrypted/RC4/key" + str(keyNum) + "_" + file
-            saveArrayAsImage(temp, originalShape, fileName)
-
-            Pd = pracCode.rc4_Decrypt_Image(C, K)
-            fileName = "Images/Decrypted/RC4/key" + str(keyNum) + "_" + file
-            saveArrayAsImage(Pd, originalShape, fileName)
-    with open("RC4/ImageKeys.txt", "w") as file:
-        file.write(keys)
-
-def testP2_RC4():
-    numStringKeys = 10
-    numImageKeys = 10
-    if __name__ == '__main__':
-        processes = [multiprocessing.Process(target=RC4TestImages, args=(numImageKeys, 0)),
-                     multiprocessing.Process(target=RC4StringTests, args=(numStringKeys,))]
-
-        for process in processes:
-            process.start()
-        for process in processes:
-            process.join()
 
 
 def testRSA():
@@ -148,20 +60,33 @@ def testRSA():
     P2 = receiver.decrypt_With_RSA(C, PR)
     print(P2)
 
-def testSHA_preHashing(message: str = "abc"):
-    print(message)
-    message_hex = sha_String_To_Hex(message)
-    temp = sha_Preprocess_Message(message_hex)
-    print(f"Preprocessed message: \n {temp}\n with length {len(temp)}")
-    temp = sha_Create_Message_Blocks(temp)
-    print(f"Message blocks: \n{temp}")
 
-    # print(sha_Hex_To_Str(message_hex))
-    # hash = sha_Calculate_Hash(message_hex)
-    # hash = 'hashWrong'
-    # digest = message_hex + hash
-    # recM, recH = Receiver.split_Digest(digest)
+def testRC4Strings():
+    for P in PlainTexts:
+        for k in keys:
+            Phex = sha_String_To_Hex(P)
+            C = RC4.rc4_Encrypt_String(Phex, k)
+            Pdec = RC4.rc4_Decrypt_String(C, k)
+            Pdec_str = sha_Hex_To_Str(Pdec)
+            if Pdec_str != P:
+                print("Error")
 
-# testRSA()
-testSHA_preHashing()
-testSHA_preHashing('a'*259)
+# Crashes, IDK why
+def testRC4Images():
+    imgDir = "Images/Original/"
+    images = os.listdir(imgDir)
+    for image in images:
+        for i, k in enumerate(keys):
+            P = Image.open(imgDir+image)
+            P = np.array(P)
+            Phex = sha_Image_To_Hex(P)
+            C = RC4.rc4_Encrypt_String(Phex, k)
+            Pdec = RC4.rc4_Decrypt_String(C, k)
+            PdecImg = sha_Hex_To_Im(Pdec, P.shape)
+            fileName = f"Images/Decrypted/RC4/key{i}_{image}.jpeg"
+            img = Image.fromarray(PdecImg)
+            img.save(fileName)
+
+
+# testRC4Strings()
+testRC4Images()

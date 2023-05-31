@@ -2,7 +2,7 @@
 # 20453508
 
 import numpy as np
-from Prac2RC4 import *
+import u20453508_Prac3_RC4 as RC4
 
 
 # region helperFunctions
@@ -30,8 +30,7 @@ def circularLeftShift(num, shifts, numBits=64):
 
 # endregion helperFunctions
 
-
-# pads message
+# region sha
 def sha_Preprocess_Message(inputHex: str) -> str:
     """
     Takes in a hex input and pads it according to the SHA standard
@@ -100,7 +99,7 @@ def sha_Message_Schedule(inputHex: str) -> np.ndarray:
 def sha_Hash_Round_Function(messageWordHex: str, aHex: str, bHex: str, cHex: str, dHex: str, eHex: str, fHex: str,
                             gHex: str, hHex: str, roundConstantHex: str) -> tuple:
     """
-    Performs the Hash round function for SHA. Thuis is seen in figure 11.11 in the textbook.
+    Performs the Hash round function for SHA. This is seen in figure 11.11 in the textbook.
     pdf page 361.
     :param messageWordHex: Self-explanatory
     :param aHex: Self-explanatory
@@ -136,11 +135,11 @@ def sha_Hash_Round_Function(messageWordHex: str, aHex: str, bHex: str, cHex: str
     hNew = hex(g)[2:].upper().zfill(16)
     gNew = hex(f)[2:].upper().zfill(16)
     fNew = hex(e)[2:].upper().zfill(16)
-    eNew = hex(d + T1)[2:].upper().zfill(16)
+    eNew = hex((d + T1) % int(2 ** 64))[2:].upper().zfill(16)
     dNew = hex(c)[2:].upper().zfill(16)
     cNew = hex(b)[2:].upper().zfill(16)
     bNew = hex(a)[2:].upper().zfill(16)
-    aNew = hex(T1 + T2)[2:].upper().zfill(16)
+    aNew = hex((T1 + T2) % int(2 ** 64))[2:].upper().zfill(16)
 
     ans = (aNew, bNew, cNew, dNew, eNew, fNew, gNew, hNew)
     return ans
@@ -148,56 +147,43 @@ def sha_Hash_Round_Function(messageWordHex: str, aHex: str, bHex: str, cHex: str
 
 def sha_F_Function(messageBlock: str, aHex: str, bHex: str, cHex: str, dHex: str, eHex: str, fHex: str, gHex: str,
                    hHex: str) -> tuple:
-    """
-    Figure 11.10 in the textbook without the final addition.
-    :param messageBlock: Block of the message in hex
-    :param aHex: current `a` in hex, a 64 bit = 16 hit string
-    :param bHex: current `b` in hex, a 64 bit = 16 hit string
-    :param cHex: current `c` in hex, a 64 bit = 16 hit string
-    :param dHex: current `d` in hex, a 64 bit = 16 hit string
-    :param eHex: current `e` in hex, a 64 bit = 16 hit string
-    :param fHex: current `f` in hex, a 64 bit = 16 hit string
-    :param gHex: current `g` in hex, a 64 bit = 16 hit string
-    :param hHex: current `h` in hex, a 64 bit = 16 hit string
-    :return: tuple of new a-h values all hex strings, 16 hits
-    """
+    W = sha_Message_Schedule(messageBlock)
 
-    messageSchedule = sha_Message_Schedule(messageBlock)
-
-    roundConstants = ['428A2F98D728AE22', '7137449123EF65CD', 'B5C0FBCFEC4D3B2F', 'E9B5DBA58189DBBC',
-                      '3956C25BF348B538', '59F111F1B605D019', '923F82A4AF194F9B', 'AB1C5ED5DA6D8118',
-                      'D807AA98A3030242', '12835B0145706FBE', '243185BE4EE4B28C', '550C7DC3D5FFB4E2',
-                      '72BE5D74F27B896F', '80DEB1FE3B1696B1', '9BDC06A725C71235', 'C19BF174CF692694',
-                      'E49B69C19EF14AD2', 'EFBE4786384F25E3', '0FC19DC68B8CD5B5', '240CA1CC77AC9C65',
-                      '2DE92C6F592B0275', '4A7484AA6EA6E483', '5CB0A9DCBD41FBD4', '76F988DA831153B5',
-                      '983E5152EE66DFAB', 'A831C66D2DB43210', 'B00327C898FB213F', 'BF597FC7BEEF0EE4',
-                      'C6E00BF33DA88FC2', 'D5A79147930AA725', '06CA6351E003826F', '142929670A0E6E70',
-                      '27B70A8546D22FFC', '2E1B21385C26C926', '4D2C6DFC5AC42AED', '53380D139D95B3DF',
-                      '650A73548BAF63DE', '766A0ABB3C77B2A8', '81C2C92E47EDAEE6', '92722C851482353B',
-                      'A2BFE8A14CF10364', 'A81A664BBC423001', 'C24B8B70D0F89791', 'C76C51A30654BE30',
-                      'D192E819D6EF5218', 'D69906245565A910', 'F40E35855771202A', '106AA07032BBD1B8',
-                      '19A4C116B8D2D0C8', '1E376C085141AB53', '2748774CDF8EEB99', '34B0BCB5E19B48A8',
-                      '391C0CB3C5C95A63', '4ED8AA4AE3418ACB', '5B9CCA4F7763E373', '682E6FF3D6B2B8A3',
-                      '748F82EE5DEFB2FC', '78A5636F43172F60', '84C87814A1F0AB72', '8CC702081A6439EC',
-                      '90BEFFFA23631E28', 'A4506CEBDE82BDE9', 'BEF9A3F7B2C67915', 'C67178F2E372532B',
-                      'CA273ECEEA26619C', 'D186B8C721C0C207', 'EADA7DD6CDE0EB1E', 'F57D4F7FEE6ED178',
-                      '06F067AA72176FBA', '0A637DC5A2C898A6', '113F9804BEF90DAE', '1B710B35131C471B',
-                      '28DB77F523047D84', '32CAAB7B40C72493', '3C9EBE0A15C9BEBC', '431D67C49C100D4C',
-                      '4CC5D4BECB3E42B6', '597F299CFC657E2A', '5FCB6FAB3AD6FAEC', '6C44198C4A475817']
-
-    aNew = aHex
-    bNew = bHex
-    cNew = cHex
-    dNew = dHex
-    eNew = eHex
-    fNew = fHex
-    gNew = gHex
-    hNew = hHex
-
+    # Get the round constants as well
+    roundConstants = [
+        '428a2f98d728ae22', '7137449123ef65cd', 'b5c0fbcfec4d3b2f', 'e9b5dba58189dbbc',
+        '3956c25bf348b538', '59f111f1b605d019', '923f82a4af194f9b', 'ab1c5ed5da6d8118',
+        'd807aa98a3030242', '12835b0145706fbe', '243185be4ee4b28c', '550c7dc3d5ffb4e2',
+        '72be5d74f27b896f', '80deb1fe3b1696b1', '9bdc06a725c71235', 'c19bf174cf692694',
+        'e49b69c19ef14ad2', 'efbe4786384f25e3', '0fc19dc68b8cd5b5', '240ca1cc77ac9c65',
+        '2de92c6f592b0275', '4a7484aa6ea6e483', '5cb0a9dcbd41fbd4', '76f988da831153b5',
+        '983e5152ee66dfab', 'a831c66d2db43210', 'b00327c898fb213f', 'bf597fc7beef0ee4',
+        'c6e00bf33da88fc2', 'd5a79147930aa725', '06ca6351e003826f', '142929670a0e6e70',
+        '27b70a8546d22ffc', '2e1b21385c26c926', '4d2c6dfc5ac42aed', '53380d139d95b3df',
+        '650a73548baf63de', '766a0abb3c77b2a8', '81c2c92e47edaee6', '92722c851482353b',
+        'a2bfe8a14cf10364', 'a81a664bbc423001', 'c24b8b70d0f89791', 'c76c51a30654be30',
+        'd192e819d6ef5218', 'd69906245565a910', 'f40e35855771202a', '106aa07032bbd1b8',
+        '19a4c116b8d2d0c8', '1e376c085141ab53', '2748774cdf8eeb99', '34b0bcb5e19b48a8',
+        '391c0cb3c5c95a63', '4ed8aa4ae3418acb', '5b9cca4f7763e373', '682e6ff3d6b2b8a3',
+        '748f82ee5defb2fc', '78a5636f43172f60', '84c87814a1f0ab72', '8cc702081a6439ec',
+        '90befffa23631e28', 'a4506cebde82bde9', 'bef9a3f7b2c67915', 'c67178f2e372532b',
+        'ca273eceea26619c', 'd186b8c721c0c207', 'eada7dd6cde0eb1e', 'f57d4f7fee6ed178',
+        '06f067aa72176fba', '0a637dc5a2c898a6', '113f9804bef90dae', '1b710b35131c471b',
+        '28db77f523047d84', '32caab7b40c72493', '3c9ebe0a15c9bebc', '431d67c49c100d4c',
+        '4cc5d4becb3e42b6', '597f299cfc657e2a', '5fcb6fab3ad6faec', '6c44198c4a475817']
     for k in range(0, 80):
-        aNew, bNew, cNew, dNew, eNew, fNew, gNew, hNew = sha_Hash_Round_Function(messageSchedule[k], aNew, bNew, cNew, dNew, eNew, fNew, gNew, hNew, roundConstants[k])
+        aHex, bHex, cHex, dHex, eHex, fHex, gHex, hHex = sha_Hash_Round_Function(W[k],
+                                                                                 aHex,
+                                                                                 bHex,
+                                                                                 cHex,
+                                                                                 dHex,
+                                                                                 eHex,
+                                                                                 fHex,
+                                                                                 gHex,
+                                                                                 hHex,
+                                                                                 roundConstants[k])
 
-    ans = (aNew, bNew, cNew, dNew, eNew, fNew, gNew, hNew)
+    ans = (aHex, bHex, cHex, dHex, eHex, fHex, gHex, hHex)
     return ans
 
 
@@ -205,7 +191,7 @@ def sha_Process_Message_Block(inputHex: str, aHex: str, bHex: str, cHex: str, dH
                               gHex: str, hHex: str) -> tuple:
     f"""
     Performs sha_F_Function() on the input block then adds a-h to the new a-h.
-    
+
     :param inputHex: Message block
     :param aHex: Current value of a
     :param bHex: Current value of b
@@ -218,31 +204,56 @@ def sha_Process_Message_Block(inputHex: str, aHex: str, bHex: str, cHex: str, dH
     :return: New a-h values
     """
 
-    aNew, bNew, cNew, dNew, eNew, fNew, gNew, hNew = sha_F_Function(inputHex,
-                                                                    aHex,
-                                                                    bHex,
-                                                                    cHex,
-                                                                    dHex,
-                                                                    eHex,
-                                                                    fHex,
-                                                                    gHex,
-                                                                    hHex)
+    oldH = np.array([aHex, bHex, cHex, dHex, eHex, fHex, gHex, hHex])
 
-    aNew = hex(int(aNew, 16) + int(aHex, 16))[2:].upper().zfill(16)
-    bNew = hex(int(bNew, 16) + int(bHex, 16))[2:].upper().zfill(16)
-    cNew = hex(int(cNew, 16) + int(cHex, 16))[2:].upper().zfill(16)
-    dNew = hex(int(dNew, 16) + int(dHex, 16))[2:].upper().zfill(16)
-    eNew = hex(int(eNew, 16) + int(eHex, 16))[2:].upper().zfill(16)
-    fNew = hex(int(fNew, 16) + int(fHex, 16))[2:].upper().zfill(16)
-    gNew = hex(int(gNew, 16) + int(gHex, 16))[2:].upper().zfill(16)
-    hNew = hex(int(hNew, 16) + int(hHex, 16))[2:].upper().zfill(16)
+    newH = sha_F_Function(inputHex, aHex, bHex, cHex, dHex, eHex, fHex, gHex, hHex)
+    ans1 = [hex((int(oldH[i], 16) + int(newH[i], 16)) % int(2 ** 64))[2:].upper().zfill(16) for i in range(0, 8)]
 
-    ans = (aNew, bNew, cNew, dNew, eNew, fNew, gNew, hNew)
+    ans = tuple(ans1)
     return ans
 
 
 def sha_Calculate_Hash(inputHex: str) -> str:
-    raise Exception("Not Implemented.")
+    """
+    Calculates the hash of the hex string provided.
+    Initialises
+    aHex
+    bHex
+    cHex
+    dHex
+    eHex
+    fHex
+    gHex
+    hHex
+    and then finds the hash.
+
+    You must:
+    initialise a-h
+    preprocess input
+    create blocks
+    find the hash, update a-h for each block
+
+    :param inputHex: Input of any lenght
+    :return:
+    """
+
+    a = "6A09E667F3BCC908"
+    b = "BB67AE8584CAA73B"
+    c = "3C6EF372FE94F82B"
+    d = "A54FF53A5F1D36F1"
+    e = "510E527FADE682D1"
+    f = "9B05688C2B3E6C1F"
+    g = "1F83D9ABFB41BD6B"
+    h = "5BE0CD19137E2179"
+
+    inputHex = sha_Preprocess_Message(inputHex)
+    messageBlocks = sha_Create_Message_Blocks(inputHex)
+
+    for messageBlock in messageBlocks:
+        a, b, c, d, e, f, g, h = sha_Process_Message_Block(messageBlock, a, b, c, d, e, f, g, h)
+
+    ans = a + b + c + d + e + f + g + h
+    return ans
 
 
 def sha_String_To_Hex(inputStr: str) -> str:
@@ -254,7 +265,11 @@ def sha_String_To_Hex(inputStr: str) -> str:
 
 
 def sha_Image_To_Hex(inputImg: np.ndarray) -> str:
-    raise Exception("Not Implemented.")
+    inputImg = inputImg.flatten()
+    ans = ""
+    for k in inputImg:
+        ans = ans + hex(k)[2:].upper().zfill(2)
+    return ans
 
 
 def sha_Hex_To_Str(inputHex: str) -> str:
@@ -267,9 +282,17 @@ def sha_Hex_To_Str(inputHex: str) -> str:
 
 
 def sha_Hex_To_Im(inputHex: str, originalShape: tuple) -> np.ndarray:
-    raise Exception("Not Implemented.")
+    if len(inputHex) % 2 == 1:
+        inputHex = '0' + inputHex
+
+    inputBytes = np.array([int(inputHex[i:i + 2], 16) for i in range(0, len(inputHex), 2)])
+
+    inputBytes = inputBytes.reshape(originalShape).round(0).astype(dtype=int)
+    return inputBytes
+# endregion sha
 
 
+# region Transmitter
 class Transmitter:
     def __init__(self, ):
         return
@@ -291,12 +314,29 @@ class Transmitter:
         return C
 
     def create_Digest(self, message) -> str:
-        raise Exception("Not Implemented.")
+        pranks = "this is an easter egg"
+        if type(message) == type(pranks):
+            inputHex = sha_String_To_Hex(message)
+        else:
+            inputHex = sha_Image_To_Hex(message)
+
+        temp = sha_Calculate_Hash(inputHex)
+        digest = inputHex + temp
+        return digest
 
     def encrypt_with_RC4(self, digest: str, key: str) -> np.ndarray:
-        raise Exception("Not Implemented.")
+        """
+        Encrypts the digest with RC4. The key is provided for RC4
+        :param digest: M||H
+        :param key: RC4 key
+        :return:
+        """
+        cipher = RC4.rc4_Encrypt_String(digest, key)
+        return cipher
+# endregion Transmitter
 
 
+# region Receiver
 class Receiver:
     def __init__(self, ):
         self.p = 0
@@ -384,10 +424,20 @@ class Receiver:
         return P
 
     def decrypt_With_RC4(self, digest: np.ndarray, key: str) -> str:
-        raise Exception("Not Implemented.")
+        plaintext = RC4.rc4_Decrypt_String(digest, key)
+        return plaintext
 
     def split_Digest(self, digest: str) -> tuple:
-        raise Exception("Not Implemented.")
+        M = digest[0:-128]
+        H = digest[-128:]
+
+        ans = (M, H)
+        return ans
 
     def authenticate_Message(self, digest: str) -> tuple:
-        raise Exception("Not Implemented.")
+        M, H = self.split_Digest(digest)
+        h_calculated = sha_Calculate_Hash(M)
+        auth = (H == h_calculated)
+        ans = (auth, M, H, h_calculated)
+        return ans
+# endregion Receiver

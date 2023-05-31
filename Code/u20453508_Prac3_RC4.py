@@ -79,20 +79,31 @@ def rc4_Process_Byte(byteToProcess: int, k: int) -> int:
 
 def rc4_Encrypt_String(plaintext: str, key: str) -> np.ndarray:
     """
-    :param plaintext: The plaintext to encrypt
+    Example usage:
+    P = "hello world"
+    Phex = sha_String_To_Hex(P)
+    C = rc4.rc4_Encrypt_String(Phex, "qwerty")
+    Pdec = rc4.rc4_Decrypt_String(C, "qwerty")
+    Pstr = sha_Hex_To_Str(Pdec)
+    print(Pstr)
+    :param plaintext: The plaintext to encrypt. Input is a hex string and encryption will be done byte by byte.
     :param key: The key to initalise S and T with
     :return: Encrypted text as an int np.ndarray
     """
-    P = [ord(c) for c in plaintext]
+    if len(plaintext) % 2 == 1:
+        plaintext = '0' + plaintext
+
+    P = [int(plaintext[i:i + 2], 16) for i in range(0, len(plaintext), 2)]
+
     S, T = rc4_Init_S_T(key)
     S = rc4_Init_Permute_S(S, T)
 
     C = []
     i = 0
     j = 0
-    for char in P:
+    for byte in P:
         (i, j, S, k) = rc4_Generate_Stream_Iteration(i, j, S)
-        c = rc4_Process_Byte(char, k)
+        c = rc4_Process_Byte(byte, k)
         C.append(c)
     C = np.array(C).round(0).astype(int)
     return C
@@ -100,25 +111,31 @@ def rc4_Encrypt_String(plaintext: str, key: str) -> np.ndarray:
 
 def rc4_Decrypt_String(ciphertext: np.ndarray, key: str) -> str:
     """
-    Decrypts ciphertext using key provided
-    :param ciphertext: Ciphertext to be decrypted
+    Decrypts ciphertext using key provided.
+
+    Example usage:
+    P = "hello world"
+    Phex = sha_String_To_Hex(P)
+    C = rc4.rc4_Encrypt_String(Phex, "qwerty")
+    Pdec = rc4.rc4_Decrypt_String(C, "qwerty")
+    Pstr = sha_Hex_To_Str(Pdec)
+    print(Pstr)
+
+    :param ciphertext: Ciphertext to be decrypted, int np array
     :param key: Key to decrypt with
-    :return: String plaintext
+    :return: Hex-string plaintext.
     """
     S, T = rc4_Init_S_T(key)
     S = rc4_Init_Permute_S(S, T)
 
-    P = []
     i = 0
     j = 0
-    for char in ciphertext:
+    P = ""
+    for byte in ciphertext:
         (i, j, S, k) = rc4_Generate_Stream_Iteration(i, j, S)
-        c = rc4_Process_Byte(char, k)
-        P.append(c)
-    P = np.array(P).round(0).astype(int)
-    ans = [chr(c) for c in P]
-    ans = ''.join(ans)
-    return ans
+        p = hex(rc4_Process_Byte(byte, k))[2:].upper().zfill(2)
+        P = P + p
+    return P
 
 
 def rc4_Encrypt_Image(plaintext: np.ndarray, key: str) -> np.ndarray:
