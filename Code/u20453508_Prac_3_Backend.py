@@ -5,7 +5,7 @@ import numpy as np
 import u20453508_Prac_3_RC4 as RC4
 
 
-# region helperFunctions
+# region helperFunction
 def circularRightShift(num, shifts, numBits=64):
     """
     Right circular right-bit shit
@@ -26,9 +26,8 @@ def circularLeftShift(num, shifts, numBits=64):
     :return:
     """
     return (num << shifts) | (num >> (numBits - shifts))
+# endregion helperFunction
 
-
-# endregion helperFunctions
 
 # region sha
 def sha_Preprocess_Message(inputHex: str) -> str:
