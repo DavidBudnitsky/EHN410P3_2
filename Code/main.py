@@ -52,7 +52,8 @@ def testRSA():
     transmitter = Transmitter()
     P1 = "1234567890AB"
     P1 = "0012003400560078009000AB"
-    receiver.generate_RSA_Keys(13, 17)
+    P1 = "443421407829"
+    receiver.generate_RSA_Keys(23, 3449)
     receiver.printRec()
     PU = receiver.publicKey
     PR = receiver.privateKey
@@ -71,22 +72,18 @@ def testRC4Strings():
             if Pdec_str != P:
                 print("Error")
 
+
 # Crashes, IDK why
-def testRC4Images():
-    imgDir = "Images/Original/"
-    images = os.listdir(imgDir)
-    for image in images:
-        for i, k in enumerate(keys):
-            P = Image.open(imgDir+image)
-            P = np.array(P)
-            Phex = sha_Image_To_Hex(P)
-            C = RC4.rc4_Encrypt_String(Phex, k)
-            Pdec = RC4.rc4_Decrypt_String(C, k)
-            PdecImg = sha_Hex_To_Im(Pdec, P.shape)
-            fileName = f"Images/Decrypted/RC4/key{i}_{image}.jpeg"
-            img = Image.fromarray(PdecImg)
-            img.save(fileName)
+def testImageHashing():
+    """
+    Hashes each P in Plaintexts and also P*150.
+    M = P || H
+    Saves to M.txt and M150.txt
+    :return:
+    """
+    a = 1
 
 
 # testRC4Strings()
-testRC4Images()
+# testImageHashing()
+testRSA()

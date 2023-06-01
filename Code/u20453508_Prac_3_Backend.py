@@ -349,15 +349,15 @@ class Receiver:
         self.privateKey = (0, 0)
 
     def printRec(self):
-        ans = f"p value: {self.p}\n" \
-              + f"q value: {self.q}\n" \
-              + f"n value: {self.n}\n" \
-              + f"phi value: {self.phi}\n" \
-              + f"e value: {self.e}\n" \
-              + f"d value: {self.d}\n" \
-              + f"PU value: {self.publicKey}\n" \
-              + f"PR value: {self.privateKey}\n"
-        print(ans)
+        ans =   f"Entered p value: {self.p}\n" \
+              + f"Entered q value: {self.q}\n" \
+              + f"Calculated n value: {self.n}\n" \
+              + f"Calculated phi value: {self.phi}\n" \
+              + f"Calculated e value: {self.e}\n" \
+              + f"Calculated d value: {self.d}\n" \
+              + f"Calculated PU value: {self.publicKey}\n" \
+              + f"Calculated PR value: {self.privateKey}\n"
+        return ans
 
     def generate_RSA_Keys(self, newP: int, newQ: int):
         """
