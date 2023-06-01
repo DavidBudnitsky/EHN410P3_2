@@ -4,7 +4,7 @@ from PLAINTEXTS import PlainTexts
 import os
 from PIL import Image
 import multiprocessing
-import u20453508_Prac3_RC4 as RC4
+import u20453508_Prac_3_RC4 as RC4
 from u20453508_Prac_3_Backend import *
 
 # Other variables and setups

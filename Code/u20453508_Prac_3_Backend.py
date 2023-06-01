@@ -2,7 +2,7 @@
 # 20453508
 
 import numpy as np
-import u20453508_Prac3_RC4 as RC4
+import u20453508_Prac_3_RC4 as RC4
 
 
 # region helperFunctions
