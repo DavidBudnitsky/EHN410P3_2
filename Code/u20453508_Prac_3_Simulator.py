@@ -78,12 +78,19 @@ def isPrime(num: int) -> bool:
 receiver = Receiver()
 transmitter = Transmitter()
 isImage = False
+showImage = False
+printImage = 0
+
 
 print(f"{HEADER}Welcome to Dodgy Dave's Dubious Digital Deception.{ENDC}\nLet's get started!\n\n")
 print("To initialise a secure transmission channel, comply with the following instructions:")
-print("Please note the following:")
-print("• The values you enter for p and q must be prime numbers.")
-print("• The values of p and q must multiply to a number greater than 65535.")
+print("Please note the following:"
+      "\n- The values you enter for p and q must be prime numbers."
+      "\n- The values of p and q must multiply to a number greater than 65535."
+      "\n- If you don't want to come up with what is asked for, you can simply press enter and we will get our own "
+      "default values."
+      "\n- When we ask yes or no and you give nothing or invalid input, we assume you meant to say no :)"
+      "\n- Have fun.")
 print(f"{BOLD}Lets get started!{ENDC}\n\nEnter the following:")
 
 p_input = input(f"{OKBLUE}RECEIVER{ENDC} p value, a good choice is 23:")
@@ -99,7 +106,7 @@ if q_input:
 else:
     q = 0
 
-if (not isPrime(p)) or (not isPrime(q)) or ((p * q) < int(2 ** 16 - 1)) or (p==q):
+if (not isPrime(p)) or (not isPrime(q)) or ((p * q) < int(2 ** 16 - 1)) or (p == q):
     print(f"{FAIL}A condition has been violated, setting p and q to random prime numbers.{ENDC}")
     p = int(np.random.choice(smallPrimes))
     q = int(np.random.choice(bigPrimes))
@@ -115,10 +122,13 @@ RC4_K = input(f"{OKGREEN}TRANSMITTER{ENDC} Enter the RC4 Key: ")
 if not (RC4_K):
     print("Nothing entered, setting key to a random string.")
     RC4_K = ''.join([np.random.choice(list(stringPrintable)) for _ in range(0, 2 * np.random.randint(3, 7))])
-    print(f"RC4 key: {RC4_K}")
+if len(RC4_K)<3:
+    print(f"{WARNING}Your RC4 Key was not secure, we will replace it with a secure key.")
+    RC4_K = ''.join([np.random.choice(list(stringPrintable)) for _ in range(0, 2 * np.random.randint(3, 7))])
 if len(RC4_K) % 2 == 1:
-    print("To encrpyt the key, it must have an even number of bytes, adding a pad to the key.")
+    print("To encrypt the key, it must have an even number of bytes, adding a pad to the key.")
     RC4_K = "0" + RC4_K
+print(f"RC4 key: {RC4_K}")
 
 RC4_Khex = sha_String_To_Hex(RC4_K)
 RC4_K_enc = transmitter.encrypt_With_RSA(RC4_Khex, publicKey)
@@ -151,23 +161,54 @@ if (not M):
         "schemes use the concepts of public-key and symmetric-key. Modern encryption techniques ensure security " \
         "because modern computers are inefficient at cracking the encryption. This text was taken from wikipedia."
 
-if M[-4:]==".png":
+if M[-4:] == ".png":
     isImage = True
-    img = Image.open(M)
-    img.show()
-    img = np.array(img)
-    print(img)
-    exit(10)
 
-print(f"{OKGREEN}TRANSMITTER: {ENDC}Message is \n{M}")
-PM_hex = sha_String_To_Hex(M)
+    temp = input("Do you want to see the image? Enter 'yes' or 'no': ")
+    if not temp:
+        temp = 'no'
+    showImage = False
+    if temp == 'yes':
+        showImage = True
+    temp = input("Do you want to see the image hex string? Enter 'yes' or 'no': ")
+    if not temp:
+        temp = 'no'
+    printImage = 0
+    if temp == 'yes':
+        printImage = 1
+
+    img = Image.open(M)
+    img = np.array(img)
+    if showImage:
+        temp = Image.fromarray(img)
+        temp.show(title="Plaintext image")
+    originalSize = img.shape
+    PM_hex = sha_Image_To_Hex(img)
+else:
+    PM_hex = sha_String_To_Hex(M)
+
+print(f"{OKGREEN}TRANSMITTER: {ENDC}Message/image is \n{M}")
 PM_hash = sha_Calculate_Hash(PM_hex)
 P_Digest = PM_hex + PM_hash
 C_digest = transmitter.encrypt_with_RC4(P_Digest, transmitter_RC4Key)
-print(f"{OKGREEN}TRANSMITTER: {ENDC}Plaintext message: \n{PM_hex}")
-print(f"{OKGREEN}TRANSMITTER: {ENDC}Plaintext hash: \n{PM_hash}")
-print(f"{OKGREEN}TRANSMITTER: {ENDC}Plaintext digest: \n{P_Digest}")
-print(f"{OKGREEN}TRANSMITTER: {ENDC}Ciphertext digest: \n{C_digest}")
+if showImage:
+    # C_image = np.array(C_digest[0:np.prod(originalSize)])
+    C_image = np.array(C_digest[0:-64]) # 64 here, last 512 bits is digest = 128 hits = 128 nibble = 64 byte
+    C_image = np.reshape(C_image, originalSize)
+    C_image = C_image.astype(np.uint8)
+    temp = Image.fromarray(C_image)
+    temp.show(title="Ciphertext image")
+
+if isImage:
+    print(f"{OKGREEN}TRANSMITTER: {ENDC}Plaintext message: \n{PM_hex if printImage==1 else 'Not shown'}")
+    print(f"{OKGREEN}TRANSMITTER: {ENDC}Plaintext hash: \n{PM_hash}")
+    print(f"{OKGREEN}TRANSMITTER: {ENDC}Plaintext digest: \n{P_Digest  if printImage==1 else 'Not shown'}")
+    print(f"{OKGREEN}TRANSMITTER: {ENDC}Ciphertext digest: \n{sha_Image_To_Hex(C_digest) if printImage==1 else 'Not shown'}")
+else:
+    print(f"{OKGREEN}TRANSMITTER: {ENDC}Plaintext message: \n{PM_hex}")
+    print(f"{OKGREEN}TRANSMITTER: {ENDC}Plaintext hash: \n{PM_hash}")
+    print(f"{OKGREEN}TRANSMITTER: {ENDC}Plaintext digest: \n{P_Digest}")
+    print(f"{OKGREEN}TRANSMITTER: {ENDC}Ciphertext digest: \n{sha_Image_To_Hex(C_digest)}")
 
 print(f"{OKCYAN}\n{line * 3}\n{line}   PHASE 3   {line}\n{line * 3}\n{ENDC}")
 
@@ -175,7 +216,7 @@ digest_dec = receiver.decrypt_With_RC4(C_digest, transmitter_RC4Key)
 
 M_dec, H_dec = receiver.split_Digest(digest_dec)
 
-changeBit = np.random.choice([True, False], p=[0.1, 0.9])
+changeBit = np.random.choice([True, False], p=[1, 0])
 if changeBit:
     M_dec_str = sha_Hex_To_Str(M_dec)
     print(f"{WARNING}Transmission error occurred!{ENDC}")
@@ -195,9 +236,32 @@ H_calculated = sha_Calculate_Hash(M_dec)
 print(f"Expected hash:\n{H_dec}")
 print(f"Calculated hash:\n{H_calculated}")
 
+if isImage:
+    P_dec = sha_Hex_To_Im(M_dec, originalSize)
+else:
+    P_dec = sha_Hex_To_Str(M_dec)
+
 if H_calculated != H_dec:
     print(f"{FAIL}Message not authenticated. The authorities have been alerted!{ENDC}")
-    print(f"The erroneous message was:\n{sha_Hex_To_Str(M_dec)}")
+    if isImage:
+        print(f"The erroneous image was:\n{sha_Image_To_Hex(P_dec) if printImage==1 else 'Not shown'}")
+        if showImage:
+            img = np.array(P_dec)
+            img = np.reshape(img, originalSize)
+            img = img.astype(np.uint8)
+            img = Image.fromarray(img, "RGB")
+            img.show(title="Erroneous image")
+    else:
+        print(f"The erroneous message was:\n{P_dec}")
 else:
     print(f"{OKGREEN}Message authenticated{ENDC}")
-    print(f"The message sent was:\n{sha_Hex_To_Str(M_dec)}")
+    if isImage:
+        print(f"The image sent was:\n{sha_Image_To_Hex(P_dec) if printImage==1 else 'Not shown'}")
+        if showImage:
+            img = np.array(P_dec)
+            img = np.reshape(img, originalSize)
+            img = img.astype(np.uint8)
+            img = Image.fromarray(img)
+            img.show(title="Image Received and authenticated")
+    else:
+        print(f"The message sent was:\n{P_dec}")

@@ -286,7 +286,7 @@ def sha_Hex_To_Im(inputHex: str, originalShape: tuple) -> np.ndarray:
 
     inputBytes = np.array([int(inputHex[i:i + 2], 16) for i in range(0, len(inputHex), 2)])
 
-    inputBytes = inputBytes.reshape(originalShape).round(0).astype(dtype=int)
+    inputBytes = np.reshape(inputBytes, originalShape).round(0).astype(dtype=int)
     return inputBytes
 # endregion sha
 
