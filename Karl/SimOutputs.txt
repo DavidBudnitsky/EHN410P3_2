@@ -1,0 +1,366 @@
+########################################################################################################################################
+#                                                                   TEST 1                                                             #
+########################################################################################################################################
+
+Welcome.
+
+To start a secure transmission channel, enter RECEIVER's p value: 
+To start a secure transmission channel, enter RECEIVER's q value: 
+
+
+PHASE 1
+
+RECEIVER entered p: 1181
+RECEIVER entered q: 6793
+RECEIVER calculated n: 8022533
+RECEIVER calculated phi: 8014560
+RECEIVER calculated public key: (65537, 8022533)
+RECEIVER calculated private key: (6527873, 8022533)
+
+TRANSMITTER Please enter RC4 key: 
+TRANSMITTER Given key: o\k|m&&bp%~ORj0m1[.zF5
+TRANSMITTER Given hex key: 6F5C6B7C6D26266270257E4F526A306D315B2E7A4635
+TRANSMITTER Encrypted RC4 key: [1709841 2311749 2430910 4901752 87346 2309349 6623869 4594752 3941702
+ 5406160 5884578]
+RECEIVER Decrypted RC4 key: 6F5C6B7C6D26266270257E4F526A306D315B2E7A4635
+
+
+PHASE 2
+
+TRANSMITTER Please enter a message: fallout.png
+Image chosen, hash will take a few minutes to generate.
+TRANSMITTER Plaintext Hash: E54B04DABAE2AD77B7F179453941D797E447472482FD2758447722DBEA4610DD379DCD19BCBE732D50ACC84E76238EB9B0665E6BDD37DE70E01F4423AF3428CC
+TRANSMITTER Encrypted Ciphertext: Not shown due to length. Can uncomment code to show it but the image will be shown.
+
+
+PHASE 3
+
+RECEIVER Busy Authenticating Image, will take a few minutes.
+
+RECEIVER Received Hex Message: Not shown due to length. Can uncomment code to show it but the image will be shown.
+
+RECEIVER Decrypted Image: Wait for it to show
+RECEIVER Expected Hash: E54B04DABAE2AD77B7F179453941D797E447472482FD2758447722DBEA4610DD379DCD19BCBE732D50ACC84E76238EB9B0665E6BDD37DE70E01F4423AF3428CC
+RECEIVER Calculated Hash: E54B04DABAE2AD77B7F179453941D797E447472482FD2758447722DBEA4610DD379DCD19BCBE732D50ACC84E76238EB9B0665E6BDD37DE70E01F4423AF3428CC
+
+Message Authenticated.
+
+
+
+
+
+
+########################################################################################################################################
+#                                                                   TEST 2                                                             #
+########################################################################################################################################
+
+Welcome.
+
+To start a secure transmission channel, enter RECEIVER's p value: 
+To start a secure transmission channel, enter RECEIVER's q value: 
+
+
+PHASE 1
+
+RECEIVER entered p: 1181
+RECEIVER entered q: 6793
+RECEIVER calculated n: 8022533
+RECEIVER calculated phi: 8014560
+RECEIVER calculated public key: (65537, 8022533)
+RECEIVER calculated private key: (6527873, 8022533)
+
+TRANSMITTER Please enter RC4 key: 
+TRANSMITTER Given key: $[t(W0BwnZ@}dI\'MP1j{>3k
+TRANSMITTER Given hex key: 245B7428573042776E5A407D64495C274D50316A7B3E336B
+TRANSMITTER Encrypted RC4 key: [7813155 5991147 6903638 728109 2502589 2621879 5991735 1930421 7066148
+ 779274 1856801 4796147]
+RECEIVER Decrypted RC4 key: 245B7428573042776E5A407D64495C274D50316A7B3E336B
+
+
+PHASE 2
+
+TRANSMITTER Please enter a message: dice.png
+Image chosen, hash will take a few minutes to generate.
+TRANSMITTER Plaintext Hash: 1FD2B03B5C51ADC1FE766E36C271A05BF639EC03C4575A58E0B639F8094435D9023D5657B3BE470BB1B5A534CB5108C05902E070F1B4F0FCE94D32E35AE065CA
+TRANSMITTER Encrypted Ciphertext: Not shown due to length. Can uncomment code to show it but the image will be shown.
+
+
+PHASE 3
+
+RECEIVER Busy Authenticating Image, will take a few minutes.
+
+RECEIVER Received Hex Message: Not shown due to length. Can uncomment code to show it but the image will be shown.
+
+RECEIVER Decrypted Image: Wait for it to show
+RECEIVER Expected Hash: 1FD2B03B5C51ADC1FE766E36C271A05BF639EC03C4575A58E0B639F8094435D9023D5657B3BE470BB1B5A534CB5108C05902E070F1B4F0FCE94D32E35AE065CA
+RECEIVER Calculated Hash: 1FD2B03B5C51ADC1FE766E36C271A05BF639EC03C4575A58E0B639F8094435D9023D5657B3BE470BB1B5A534CB5108C05902E070F1B4F0FCE94D32E35AE065CA
+
+Message Authenticated.
+
+
+
+
+
+
+
+########################################################################################################################################
+#                                                                   TEST 3                                                             #
+########################################################################################################################################
+
+Welcome.
+
+To start a secure transmission channel, enter RECEIVER's p value: 
+To start a secure transmission channel, enter RECEIVER's q value: 
+
+
+PHASE 1
+
+RECEIVER entered p: 1181
+RECEIVER entered q: 6793
+RECEIVER calculated n: 8022533
+RECEIVER calculated phi: 8014560
+RECEIVER calculated public key: (65537, 8022533)
+RECEIVER calculated private key: (6527873, 8022533)
+
+TRANSMITTER Please enter RC4 key: 
+TRANSMITTER Given key: JzvE"^)&>h]kT8Ku@8`Nnz'M
+TRANSMITTER Given hex key: 4A7A7645225E29263E685D6B54384B754038604E6E7A274D
+TRANSMITTER Encrypted RC4 key: [3644401 2943621 4521303 3766379 7386656 6450552 7493235 7530011 96892
+ 4266130 4190165 4624348]
+RECEIVER Decrypted RC4 key: 4A7A7645225E29263E685D6B54384B754038604E6E7A274D
+
+
+PHASE 2
+
+TRANSMITTER Please enter a message: Testing123!
+TRANSMITTER Plaintext Hash: 5E706CB04271F1E2DEF7507A22994627B71B7E5DD0AA1ED6B6956007F9FD16FF037CFE038F6FC82D4EAB6A8ADC51703C8A6550D4915FF2DBF659C6B990D05937
+TRANSMITTER Encrypted Ciphertext: ['15', '12', 'C5', '54', '2F', '09', '2D', '69', '84', '40', '12', '9A', '1E', '7E', 'A3', 'E9', 'FD', 'C7', 'B5', '66', 'DC', '67', '7C', 'B8', '34', 'B7', '60', 'C6', '04', 'E2', 'A4', 'FD', '5F', '6E', '7C', 'E1', '50', 'E9', 'F9', 'CE', '45', '4A', 'FA', 'C5', '4F', '65', 'AA', '7A', '39', '68', '46', '7F', '9E', 'FE', 'F9', 'DB', '2C', '27', '0E', '6D', '4B', 'FD', 'D8', 'EA', 'A8', '64', 'C5', 'EF', '00', '75', '28', 'DD', '30', 'DB', '70']
+
+
+PHASE 3
+
+RECEIVER Received Hex Message: 54657374696E6731323321
+
+RECEIVER Decrypted Message: Testing123!
+
+RECEIVER Expected Hash: 5E706CB04271F1E2DEF7507A22994627B71B7E5DD0AA1ED6B6956007F9FD16FF037CFE038F6FC82D4EAB6A8ADC51703C8A6550D4915FF2DBF659C6B990D05937
+RECEIVER Calculated Hash: 5E706CB04271F1E2DEF7507A22994627B71B7E5DD0AA1ED6B6956007F9FD16FF037CFE038F6FC82D4EAB6A8ADC51703C8A6550D4915FF2DBF659C6B990D05937
+
+Message Authenticated.
+
+
+
+
+
+
+
+
+########################################################################################################################################
+#                                                                   TEST 4                                                             #
+########################################################################################################################################
+
+Welcome.
+
+To start a secure transmission channel, enter RECEIVER's p value: 
+To start a secure transmission channel, enter RECEIVER's q value: 
+
+
+PHASE 1
+
+RECEIVER entered p: 1181
+RECEIVER entered q: 6793
+RECEIVER calculated n: 8022533
+RECEIVER calculated phi: 8014560
+RECEIVER calculated public key: (65537, 8022533)
+RECEIVER calculated private key: (6527873, 8022533)
+
+TRANSMITTER Please enter RC4 key: T
+Input key must be at least two characters long! Enter no value to have a key generated for you.
+
+TRANSMITTER Please enter RC4 key: Test
+TRANSMITTER Given key: Test
+TRANSMITTER Given hex key: 54657374
+TRANSMITTER Encrypted RC4 key: [2056969 2815544]
+RECEIVER Decrypted RC4 key: 54657374
+
+
+PHASE 2
+
+TRANSMITTER Please enter a message: TestyP12
+TRANSMITTER Plaintext Hash: C97949E9D66E67C4C34214C0FB28C349177E49E5BF3EF5068D20AD8D01EC7C9039B5E4B30D0A115A794E880609192E55C7C8940DBA0956093170C13C5E5E7071
+TRANSMITTER Encrypted Ciphertext: ['2E', '0B', '3E', '3C', '3B', '6B', '3F', '78', 'BD', 'CE', 'F2', 'E1', '85', 'F5', 'FC', '71', '59', '44', 'CF', '45', '6C', 'E1', '60', 'EC', 'BC', 'EC', 'E5', 'C7', 'C1', '92', 'F0', 'C3', 'A8', '81', '1B', '7E', 'E2', '75', '94', 'C5', 'D8', 'B3', '1E', '31', '45', '25', 'DE', '02', 'A7', 'A8', '68', '7A', '02', '56', 'E2', 'F9', 'E5', '97', 'F5', '1A', '63', 'B6', '79', '49', '47', '87', '5D', '98', 'C6', '15', '30', '2A']
+
+
+PHASE 3
+
+RECEIVER Received Hex Message: 5465737479503132
+
+RECEIVER Decrypted Message: TestyP12
+
+RECEIVER Expected Hash: C97949E9D66E67C4C34214C0FB28C349177E49E5BF3EF5068D20AD8D01EC7C9039B5E4B30D0A115A794E880609192E55C7C8940DBA0956093170C13C5E5E7071
+RECEIVER Calculated Hash: C97949E9D66E67C4C34214C0FB28C349177E49E5BF3EF5068D20AD8D01EC7C9039B5E4B30D0A115A794E880609192E55C7C8940DBA0956093170C13C5E5E7071
+
+Message Authenticated.
+
+
+
+
+
+
+
+
+
+########################################################################################################################################
+#                                                                   TEST 5                                                             #
+########################################################################################################################################
+
+Welcome.
+
+To start a secure transmission channel, enter RECEIVER's p value: 10
+p is not prime, try again!
+
+To start a secure transmission channel, enter RECEIVER's p value: 17
+To start a secure transmission channel, enter RECEIVER's q value: 71
+
+
+PHASE 1
+
+RECEIVER entered p: 17
+RECEIVER entered q: 71
+RECEIVER calculated n: 1207
+RECEIVER calculated phi: 1120
+RECEIVER calculated public key: (257, 1207)
+RECEIVER calculated private key: (353, 1207)
+
+TRANSMITTER Please enter RC4 key: 
+Calculated RSA n is too small for M values, try again! n should be greater than 32382 to try ensure the RC4 key (printable ASCII chars) can be transmitted.
+
+TRANSMITTER Please enter RC4 key: 
+Calculated RSA n is too small for M values, try again! n should be greater than 32382 to try ensure the RC4 key (printable ASCII chars) can be transmitted.
+
+TRANSMITTER Please enter RC4 key: Te
+Calculated RSA n is too small for M values, try again! n should be greater than 32382 to try ensure the RC4 key (printable ASCII chars) can be transmitted.
+
+TRANSMITTER Please enter RC4 key: T
+Input key must be at least two characters long! Enter no value to have a key generated for you.
+
+TRANSMITTER Please enter RC4 key: TEST
+Calculated RSA n is too small for M values, try again! n should be greater than 32382 to try ensure the RC4 key (printable ASCII chars) can be transmitted.
+
+TRANSMITTER Please enter RC4 key: 
+
+
+
+
+
+
+
+
+
+########################################################################################################################################
+#                                                                   TEST 6                                                             #
+########################################################################################################################################
+
+Welcome.
+
+To start a secure transmission channel, enter RECEIVER's p value: 1181
+To start a secure transmission channel, enter RECEIVER's q value: 1187
+
+
+PHASE 1
+
+RECEIVER entered p: 1181
+RECEIVER entered q: 1187
+RECEIVER calculated n: 1401847
+RECEIVER calculated phi: 1399480
+RECEIVER calculated public key: (65537, 1401847)
+RECEIVER calculated private key: (94513, 1401847)
+
+TRANSMITTER Please enter RC4 key: TestLolDaveNoob
+Input key must be an even number of characters for future RSA encryption!
+
+TRANSMITTER Please enter RC4 key: TestLolDaveNoob2
+TRANSMITTER Given key: TestLolDaveNoob2
+TRANSMITTER Given hex key: 546573744C6F6C446176654E6F6F6232
+TRANSMITTER Encrypted RC4 key: [160283 465354 1035087 1216004 30964 1280921 222773 481579]
+RECEIVER Decrypted RC4 key: 546573744C6F6C446176654E6F6F6232
+
+
+PHASE 2
+
+TRANSMITTER Please enter a message: TristanAlsoNoob
+TRANSMITTER Plaintext Hash: 178DA3937B633F3B15C82C558C72684E83681331755B539D7E79F9CFEE8310E4A8A9B309568CC8A37E46F9D996BF8E106293B9D371EAB51D251420D52B117028
+TRANSMITTER Encrypted Ciphertext: ['D5', '4D', 'BF', '40', '7F', 'D6', '15', '94', '1B', '74', '12', '11', 'E1', '1F', 'E1', 'D4', '4F', 'E5', 'F5', '15', '3A', '8C', 'EA', '84', '5A', '09', '59', 'D7', '72', '1F', '0A', '35', '14', '58', 'CA', '49', '98', '8F', '7F', 'FA', '60', '8A', '22', '64', '02', 'DB', '7A', 'C3', '4E', 'CC', '4D', '7D', '7C', 'E2', 'D6', '07', '25', 'A2', 'CE', 'B8', '9F', 'FC', '9B', 'E6', 'AF', '21', 'B9', 'CF', 'C7', 'D1', '11', 'A7', '26', 'BC', '3F', 'EA', '1D', '43', 'BB']
+
+
+PHASE 3
+
+RECEIVER Received Hex Message: 5472697374616E416C736F4E6F6F62
+
+RECEIVER Decrypted Message: TristanAlsoNoob
+
+RECEIVER Expected Hash: 178DA3937B633F3B15C82C558C72684E83681331755B539D7E79F9CFEE8310E4A8A9B309568CC8A37E46F9D996BF8E106293B9D371EAB51D251420D52B117028
+RECEIVER Calculated Hash: 178DA3937B633F3B15C82C558C72684E83681331755B539D7E79F9CFEE8310E4A8A9B309568CC8A37E46F9D996BF8E106293B9D371EAB51D251420D52B117028
+
+Message Authenticated.
+
+
+
+
+
+
+
+
+
+########################################################################################################################################
+#                                                                   TEST 7                                                             #
+########################################################################################################################################
+
+Welcome.
+
+To start a secure transmission channel, enter RECEIVER's p value: 1181
+To start a secure transmission channel, enter RECEIVER's q value: 1181
+q cannot equal p, try again!
+
+To start a secure transmission channel, enter RECEIVER's q value: 1187
+
+
+PHASE 1
+
+RECEIVER entered p: 1181
+RECEIVER entered q: 1187
+RECEIVER calculated n: 1401847
+RECEIVER calculated phi: 1399480
+RECEIVER calculated public key: (65537, 1401847)
+RECEIVER calculated private key: (94513, 1401847)
+
+TRANSMITTER Please enter RC4 key: 
+TRANSMITTER Given key: pzb7HiC~.v
+TRANSMITTER Given hex key: 707A62374869437E2E76
+TRANSMITTER Encrypted RC4 key: [1085223 829564 366466 761212 1323097]
+RECEIVER Decrypted RC4 key: 707A62374869437E2E76
+
+
+PHASE 2
+
+TRANSMITTER Please enter a message: T
+TRANSMITTER Plaintext Hash: B2396A002FE7AEC008808687D7CBACB340B7F7A090008382F3C95870F6FB10415F61F5737C102D4BFEC58FE525407EA2001E761DAB1DA8A501D9523921F0EC21
+TRANSMITTER Encrypted Ciphertext: ['2E', '95', 'D0', '09', 'C7', '34', '95', '0E', '23', '34', '04', '04', 'A4', 'E3', '36', '58', '89', 'B2', 'DA', '55', '0D', 'B8', '7B', '3A', '26', '71', '49', '71', 'A1', '92', '04', 'D9', '00', '96', '99', '1E', '4A', '4C', '16', '10', '83', '9A', 'B6', '05', 'A8', 'F7', '7F', '36', '3A', 'D3', 'DB', '85', '60', '20', '64', '2F', '36', '3D', '45', 'C9', 'CD', '6D', '09', 'F5', '96']
+
+
+PHASE 3
+
+RECEIVER Message Bit flipped in pos 1
+RECEIVER Received Hex Message: 14
+
+RECEIVER Decrypted Message: 
+
+RECEIVER Expected Hash: B2396A002FE7AEC008808687D7CBACB340B7F7A090008382F3C95870F6FB10415F61F5737C102D4BFEC58FE525407EA2001E761DAB1DA8A501D9523921F0EC21
+RECEIVER Calculated Hash: DE9DAC397B194ABBE1FF5CF72B6310B69828E04DE98BFB09E459413DE1244744C7DD8548308F367131CF7E88F29656737BEBCF7DF371C7F836C73D9897BFD920
+
+Message not Authenticated.
+
+
+
+
+

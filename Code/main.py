@@ -83,7 +83,21 @@ def testImageHashing():
     """
     a = 1
 
+
+def testImageUse():
+    img = Image.open("image1.png")
+    img = np.array(img)
+    originalSize = img.shape
+    print(originalSize)
+    temp = Image.fromarray(img)
+    temp.show()
+    img = img.flatten()
+    img = np.reshape(img, originalSize)
+    temp = Image.fromarray(img)
+    temp.show()
+
 # testRC4Strings()
 # testImageHashing()
 # testRSA()
-
+# testImageUse()
+print(sha_Calculate_Hash("4F58F9828F32DAB9"))
